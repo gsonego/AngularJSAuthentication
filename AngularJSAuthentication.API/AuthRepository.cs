@@ -93,6 +93,11 @@ namespace AngularJSAuthentication.API
              return  _context.RefreshTokens.ToList();
         }
 
+        public List<IdentityUser> GetAllUsers()
+        {
+            return _context.Users.ToList();
+        }             
+
         public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
         {
             IdentityUser user = await _userManager.FindAsync(loginInfo);

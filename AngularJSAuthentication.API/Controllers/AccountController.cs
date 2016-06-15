@@ -71,7 +71,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            var redirectUriValidationResult = ValidateClientAndRedirectUri(this.Request, ref redirectUri);
+            var redirectUriValidationResult = ValidateClientAndRedirectUri(Request, ref redirectUri);
 
             if (!string.IsNullOrWhiteSpace(redirectUriValidationResult))
             {
@@ -234,7 +234,6 @@ namespace AngularJSAuthentication.API.Controllers
 
         private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)
         {
-
             Uri redirectUri;
 
             var redirectUriString = GetQueryString(Request, "redirect_uri");
@@ -293,7 +292,7 @@ namespace AngularJSAuthentication.API.Controllers
         {
             ParsedExternalAccessToken parsedToken = null;
 
-            var verifyTokenEndPoint = "";
+            string verifyTokenEndPoint;
 
             if (provider == "Facebook")
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AngularJSAuthentication.API.Controllers
@@ -11,8 +6,7 @@ namespace AngularJSAuthentication.API.Controllers
     [RoutePrefix("api/RefreshTokens")]
     public class RefreshTokensController : ApiController
     {
-
-        private AuthRepository _repo = null;
+        private readonly AuthRepository _repo;
 
         public RefreshTokensController()
         {
