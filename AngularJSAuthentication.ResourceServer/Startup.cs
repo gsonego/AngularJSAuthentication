@@ -1,12 +1,8 @@
 ﻿using AngularJSAuthentication.ResourceServer.App_Start;
-using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
+using Microsoft.Owin;
 
 [assembly: OwinStartup(typeof(AngularJSAuthentication.ResourceServer.Startup))]
 namespace AngularJSAuthentication.ResourceServer

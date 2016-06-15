@@ -2,27 +2,24 @@
 using AngularJSAuthentication.API.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API
 {
 
     public class AuthRepository : IDisposable
     {
-        private AuthContext _ctx;
+        private readonly AuthContext _context;
 
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AuthRepository()
         {
-            _ctx = new AuthContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+            _context = new AuthContext();
+            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_context));
         }
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
@@ -46,7 +43,7 @@ namespace AngularJSAuthentication.API
 
         public Client FindClient(string clientId)
         {
-            var client = _ctx.Clients.Find(clientId);
+            var client = _context.Clients.Find(clientId);
 
             return client;
         }
@@ -54,25 +51,25 @@ namespace AngularJSAuthentication.API
         public async Task<bool> AddRefreshToken(RefreshToken token)
         {
 
-           var existingToken = _ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
+           var existingToken = _context.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
 
            if (existingToken != null)
            {
              var result = await RemoveRefreshToken(existingToken);
            }
           
-            _ctx.RefreshTokens.Add(token);
+            _context.RefreshTokens.Add(token);
 
-            return await _ctx.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> RemoveRefreshToken(string refreshTokenId)
         {
-           var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
+           var refreshToken = await _context.RefreshTokens.FindAsync(refreshTokenId);
 
            if (refreshToken != null) {
-               _ctx.RefreshTokens.Remove(refreshToken);
-               return await _ctx.SaveChangesAsync() > 0;
+               _context.RefreshTokens.Remove(refreshToken);
+               return await _context.SaveChangesAsync() > 0;
            }
 
            return false;
@@ -80,20 +77,20 @@ namespace AngularJSAuthentication.API
 
         public async Task<bool> RemoveRefreshToken(RefreshToken refreshToken)
         {
-            _ctx.RefreshTokens.Remove(refreshToken);
-             return await _ctx.SaveChangesAsync() > 0;
+            _context.RefreshTokens.Remove(refreshToken);
+             return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<RefreshToken> FindRefreshToken(string refreshTokenId)
         {
-            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
+            var refreshToken = await _context.RefreshTokens.FindAsync(refreshTokenId);
 
             return refreshToken;
         }
 
         public List<RefreshToken> GetAllRefreshTokens()
         {
-             return  _ctx.RefreshTokens.ToList();
+             return  _context.RefreshTokens.ToList();
         }
 
         public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
@@ -119,7 +116,7 @@ namespace AngularJSAuthentication.API
 
         public void Dispose()
         {
-            _ctx.Dispose();
+            _context.Dispose();
             _userManager.Dispose();
 
         }

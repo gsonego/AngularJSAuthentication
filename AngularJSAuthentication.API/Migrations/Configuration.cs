@@ -1,20 +1,19 @@
+using AngularJSAuthentication.API.Entities;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Linq;
+
 namespace AngularJSAuthentication.API.Migrations
 {
-    using AngularJSAuthentication.API.Entities;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<AngularJSAuthentication.API.AuthContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AuthContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AngularJSAuthentication.API.AuthContext context)
+        protected override void Seed(AuthContext context)
         {
             if (context.Clients.Count() > 0)
             {
@@ -28,7 +27,7 @@ namespace AngularJSAuthentication.API.Migrations
         private static List<Client> BuildClientsList()
         {
 
-            List<Client> ClientsList = new List<Client> 
+            List<Client> clientsList = new List<Client> 
             {
                 new Client
                 { Id = "ngAuthApp", 
@@ -50,7 +49,7 @@ namespace AngularJSAuthentication.API.Migrations
                 }
             };
 
-            return ClientsList;
+            return clientsList;
         }
     }
 }
