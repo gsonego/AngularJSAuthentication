@@ -9,6 +9,13 @@ namespace AngularJSAuthentication.ConsoleApp
 {
     class Program
     {
+        private static string _baseAddress;
+
+        public Program()
+        {
+            _baseAddress = "http://localhost:26000/";
+        }
+
         static void Main()
         {
             try
@@ -38,7 +45,7 @@ namespace AngularJSAuthentication.ConsoleApp
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:26264/");
+                client.BaseAddress = new Uri(_baseAddress);
 
                 HttpResponseMessage response = client.PostAsync("token",
                     new FormUrlEncodedContent(tokenModel)).Result;
@@ -69,7 +76,7 @@ namespace AngularJSAuthentication.ConsoleApp
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:26264/");
+                client.BaseAddress = new Uri(_baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
