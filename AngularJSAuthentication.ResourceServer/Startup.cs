@@ -9,7 +9,6 @@ namespace AngularJSAuthentication.ResourceServer
 {
     public class Startup
     {
-
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
 
         public void Configuration(IAppBuilder app)
@@ -21,7 +20,6 @@ namespace AngularJSAuthentication.ResourceServer
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-            
         }
 
         private void ConfigureOAuth(IAppBuilder app)

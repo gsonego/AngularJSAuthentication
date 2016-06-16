@@ -7,7 +7,6 @@ namespace AngularJSAuthentication.API.Providers
 {
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
-
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
             var clientid = context.Ticket.Properties.Dictionary["as:client_id"];

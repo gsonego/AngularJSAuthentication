@@ -31,9 +31,9 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var repo = new AuthRepository())
             {
-                client = _repo.FindClient(context.ClientId);
+                client = repo.FindClient(context.ClientId);
             }
 
             if (client == null)
@@ -65,8 +65,8 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            context.OwinContext.Set<string>("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
+            context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
             return Task.FromResult<object>(null);
@@ -74,16 +74,15 @@ namespace AngularJSAuthentication.API.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
 
             if (allowedOrigin == null) allowedOrigin = "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var repo = new AuthRepository())
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                IdentityUser user = await repo.FindUser(context.UserName, context.Password);
 
                 if (user == null)
                 {
@@ -126,7 +125,7 @@ namespace AngularJSAuthentication.API.Providers
             // Change auth ticket for refresh token requests
             var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
             
-            var newClaim = newIdentity.Claims.Where(c => c.Type == "newClaim").FirstOrDefault();
+            var newClaim = newIdentity.Claims.FirstOrDefault(c => c.Type == "newClaim");
             if (newClaim != null)
             {
                 newIdentity.RemoveClaim(newClaim);
